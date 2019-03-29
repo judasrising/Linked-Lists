@@ -1,0 +1,94 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct Node
+{
+	int value;
+	struct Node *next;
+}*first=NULL;
+
+struct Node *add_to_list(struct Node *head, int n)
+{
+	struct Node *new_node = malloc(sizeof(struct Node));
+	if (new_node == NULL) {
+		printf("Allocation failed.");
+		exit(EXIT_FAILURE);
+	}
+	new_node->value = n;
+	new_node->next = head;
+
+	return new_node;
+}
+
+void display(struct Node *head)
+{
+	for (; head != NULL; head = head->next)
+		printf("%d ", head->value);
+	printf("\n");
+}
+
+/*struct Node *delete(struct Node *head, int n)
+{
+	struct Node *prev=NULL, *cur=head;
+
+	for (; cur != NULL && cur->value != n; prev = cur, cur = cur->next);
+
+	if (cur == NULL)
+		return head;
+
+	if (prev == NULL)
+		head = head->next;
+	else
+		prev->next = cur->next;
+
+	free(cur);
+	return head;
+}*/
+
+void delete(struct Node **head, int n)
+{
+	struct Node *cur = *head, *prev = NULL;
+
+	for (; cur != NULL && cur->value != n; prev = cur, cur = cur->next);
+
+	if (cur == NULL)
+		return;
+	if (prev == NULL)
+		*head = (*head)->next;
+	else
+		prev->next = cur->next;
+	free(cur);
+}
+
+int count_occurences(struct Node *list, int n)
+{
+	int count = 0;
+
+	for (; list != NULL; list = list->next)
+	{
+		if (list->value == n)
+			count++;
+	}
+	return count;
+}
+
+int main()
+{
+	first = add_to_list(first, 2);
+	first = add_to_list(first, 4);
+	first = add_to_list(first, 6);
+	first = add_to_list(first, 8);
+	first = add_to_list(first, 5);
+	first = add_to_list(first, 8);
+	first = add_to_list(first, 7);
+	first = add_to_list(first, 8);
+	first = add_to_list(first, 2);
+
+
+	display(first);
+
+	printf("\n%d\n", count_occurences(first, 1));
+	
+
+	getch();
+}
