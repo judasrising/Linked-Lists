@@ -1,0 +1,65 @@
+# include<stdio.h>
+# include<stdlib.h>
+
+struct Node
+{
+	int value;
+	struct Node *next;
+}*first=NULL;
+
+struct Node *add_node(struct Node *head, int n)
+{
+	struct Node *new_node = malloc(sizeof(struct Node));
+
+	if (new_node == NULL)
+	{
+		printf("Allocation failed. Exiting the program...");
+		exit(EXIT_FAILURE);
+	}
+
+	new_node->value = n;
+	new_node->next = head;
+	return new_node;
+}
+
+void display(struct Node *head)
+{
+	for (; head != NULL; head = head->next)
+		printf("%d ", head->value);
+	printf("\n");
+}
+
+void bubble_sort(struct Node *head)
+{
+	struct Node *cur1 = head, *cur2, *prev = NULL, *temp,*next;
+
+	for (; cur1->next != NULL; cur1 = cur1->next)
+		for (cur2 = head, prev = NULL; cur2->next->next != NULL; prev = cur2, cur2 = cur2->next)
+		{
+			if ((cur2->next) > (cur2->next->next)) {
+				temp = prev->next;
+				next = cur2->next->next;
+				prev->next = cur2->next;
+				cur2->next = next;
+
+
+			}
+		}
+
+	
+}
+
+int main()
+{
+	first = add_node(first, 8);
+	first = add_node(first, 4);
+	first = add_node(first, 1);
+	first = add_node(first, 7);
+	printf("Before Sorting: ");
+	display(first);
+	bubble_sort(&first);
+	printf("After Sorting: ");
+	display(first);
+
+	getch();
+}
