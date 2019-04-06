@@ -1,0 +1,105 @@
+# include<stdio.h>
+# include<stdlib.h>
+# include<string.h>
+
+struct Node
+{
+	int value;
+	struct Node *next;
+}*first=NULL;
+
+void add_to_list(struct Node **head, int n)
+{
+	struct Node *new_node = malloc(sizeof(struct Node));
+
+	if (new_node == NULL)
+		exit(1);
+
+	new_node->value = n;
+	new_node->next = *head;
+	*head = new_node;
+}
+
+void display(struct Node *head)
+{
+	for (; head != NULL; head = head->next)
+		printf("%d ", head->value);
+	printf("\n");
+}
+
+void delete(struct Node **head,int n)
+{
+	struct Node *prev = NULL, *cur = *head;
+
+	for (; cur != NULL && cur->value!=n; prev = cur, cur = cur->next);
+
+	if (cur == NULL) {
+	    printf("Number does not exit.");
+	    return;
+	}
+
+	if (prev == NULL)
+		*head = (*head)->next;
+
+	
+	else
+		prev->next=cur->next;
+
+	free(cur);
+
+}
+
+int search(struct Node *head, int n)
+{
+	int i = 1;
+
+	for (; head != NULL && head->value!=n; head = head->next, i++);
+
+	if (head == NULL)
+		return 0;
+	return i;
+}
+
+struct Node *find_last(struct Node *head, int n)
+{
+	struct Node *found = NULL;
+	for (; head != NULL; head = head->next)
+		if (head->value == n)
+			found = head;
+	return found;
+}
+
+
+int main()
+{
+	
+	add_to_list(&first, 12);
+	add_to_list(&first, 10);
+	add_to_list(&first, 8);
+	add_to_list(&first, 2);
+	add_to_list(&first, 6);
+	add_to_list(&first, 4);
+	add_to_list(&first, 2);
+
+	display(first);
+
+	delete(&first, 6);
+
+	display(first);
+	int num;
+	printf("Enter a number to search: ");
+	scanf_s("%d", &num);
+	
+	if (search(first, num))
+		printf("Number found in index %d\n", search(first, num));
+	else
+		printf("Number does not found.\n");
+
+	if (find_last(first, 1) == 0)
+		printf("Number does not found.\n");
+	else
+		printf("Addres of the given number's last occurence: %d", find_last(first, 1));
+
+	getch();
+
+}
