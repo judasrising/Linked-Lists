@@ -1,0 +1,68 @@
+struct Node
+{
+	int value;
+	struct Node *next;
+}*first=NULL;
+
+void add_the_end(struct Node **head, int n)
+{
+	struct Node *new_node = malloc(sizeof(struct Node));
+	struct Node *last = *head;
+
+	if (new_node == NULL)
+		exit(1);
+
+	new_node->value = n;
+	new_node->next = NULL;
+
+	if (*head == NULL)
+	{
+		*head = new_node;
+		return;
+	}
+
+
+	for (; last->next != NULL; last = last->next);
+	last->next = new_node;
+
+	
+}
+
+void display(struct Node *head)
+{
+	for (; head != NULL; head = head->next)
+		printf("%d ", head->value);
+	printf("\n");
+}
+
+int count_occurences(struct Node *head, int n)
+{
+	int i = 0;
+	for (; head != NULL; head = head->next)
+		if (head->value == n)
+			i++;
+
+	return i;
+}
+
+int main()
+{
+	add_the_end(&first, 6);
+	add_the_end(&first, 2);
+	add_the_end(&first, 4);
+	add_the_end(&first, 6);
+	add_the_end(&first, 8);
+	add_the_end(&first, 6);
+	add_the_end(&first, 10);
+	add_the_end(&first, 6);
+
+	display(first);
+
+	if (count_occurences(first, 6))
+		printf("%d occurences.\n", (count_occurences(first, 6)));
+
+	else
+			printf("Does not exist.\n");
+
+	getch();
+}
