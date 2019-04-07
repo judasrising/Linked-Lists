@@ -1,0 +1,69 @@
+struct Node
+{
+	int data;
+	struct Node *next;
+}*first=NULL;
+
+void add_to_list(struct Node **head, int n)
+{
+	struct Node *new_node = malloc(sizeof(struct Node));
+	struct Node *last = *head;
+	if (new_node == NULL)
+		exit(1);
+
+	new_node->data = n;
+	new_node->next = NULL;
+
+	if (*head == NULL) {
+		*head = new_node;
+		return;
+	}
+
+	for (; last->next != NULL; last = last->next);
+	last->next = new_node;
+}
+
+void display(struct Node *head)
+{
+	for (; head != NULL; head = head->next)
+		printf("Data = %d\n", head->data);
+	printf("\n");
+}
+
+void insert_middle(struct Node **head, int n, int pos)
+{
+	struct Node *cur = *head ,*temp;
+	struct Node *new_node = malloc(sizeof(struct Node));
+
+	for (int i = 1; i < pos-1 && cur->next->next != NULL; cur = cur->next, i++);
+	temp = cur->next;
+	cur->next = new_node;
+	new_node->data = n;
+	new_node->next = temp;
+}
+int main()
+{
+	int size,i=1,num,pos;
+	printf("Input the number of nodes: ");
+	scanf("%d", &size);
+
+	for (; i <= size; i++)
+	{
+		printf("Input data for node %d: ", i);
+		scanf("%d", &num);
+		add_to_list(&first, num);
+	}
+	printf("\nData entered in the list are: \n");
+	display(first);
+
+	printf("\nInput data to insert in the middle of the list: ");
+	scanf("%d", &num);
+	printf("Input the position to insert new node: ");
+	scanf("%d", &pos);
+
+	insert_middle(&first, num, pos);
+
+	display(first);
+
+	getch();
+}
