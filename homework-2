@@ -1,12 +1,13 @@
 # include<stdio.h>
 # include<stdlib.h>
+#include<time.h>
 #define SIZE 10
 
 struct Node
 {
 	int data;
 	struct Node *next;
-}*first=NULL;
+}*first = NULL;
 
 void generate_linked_list(struct Node **head_ref, int new_data, int choice)
 {
@@ -37,7 +38,7 @@ void generate_linked_list(struct Node **head_ref, int new_data, int choice)
 		new_node->next = NULL;
 
 		if (*head_ref == NULL)   // if this is true the list is empty.
-			                     // make the new node as head.
+								 // make the new node as head.
 		{
 			*head_ref = new_node;
 			return;
@@ -57,15 +58,31 @@ void displayList(struct Node *node)  // display the list.
 	printf("\n");
 }
 
+int calculate_square(int n)  // function to calculate square of a number
+{
+	return n * n;
+}
+
+int computeSum(int(*fp)(int), struct Node **head_ref)
+{
+	int sum = 0;
+	struct Node *first = *head_ref;
+	for (; first != NULL; first = first->next)
+		sum += fp(first->data);
+
+	return sum;
+}
+
 int main()
 {
 	/* insert random numbers within the list. */
 	srand(time(NULL));
 	for (int i = 0; i < SIZE; i++)
-		generate_linked_list(&first, 1+rand()%+100, 0 + rand() % +2);
-	
+		generate_linked_list(&first, 1 + rand() % +100, 0 + rand() % +2);
+
 	displayList(first);
+
+	printf("Summation of the elements' square = %d", computeSum(calculate_square, &first));
 
 	getch();
 }
-
